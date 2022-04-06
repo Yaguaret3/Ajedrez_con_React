@@ -1,0 +1,54 @@
+.wrapper{
+    background-color: cadetblue;
+}
+    
+.board {
+    top: 20%;
+    left: 35%;
+    position: fixed;
+}
+.tile:nth-child(even){
+    background-color: navajowhite;
+}
+.tile:nth-child(odd){
+    background-color: burlywood;
+}
+
+.tile{
+    height: 60px;
+    width: 60px;
+    display: inline-table;
+    border: 1px solid black;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.tile-optional-move{
+    height: 60px;
+    width: 60px;
+    display: inline-table;
+    border: 1px solid black;
+    background-color: gold;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.tile-to-move{
+    height: 60px;
+    width: 60px;
+    display: inline-table;
+    border: 2px solid red;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.black-piece{
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+    color: black;
+}
+.white-piece{
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+    color: white;
+}
