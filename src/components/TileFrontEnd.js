@@ -17,12 +17,17 @@ export function TileFrontEnd(props){
         finalClass = finalClass + " black-piece";
     }
 
-
+    let imgUrl = "";
+    if(props.tile.getPiece() != null){
+        imgUrl = props.tile.getPiece().getAlliance()+"Pieces/"+props.tile.getPiece().getPieceType()+".png";
+    }
 
     return (
-        <span className={finalClass} onClick= {() => props.selectTile(props.tile)}>
-            {props.tile.piece == null ? "-" : props.tile.piece.getPieceType()}
-        </span>
+        <div className={finalClass} onClick= {() => props.selectTile(props.tile)}>
+
+            <img src={imgUrl}/>
+
+        </div>
     );
 
 

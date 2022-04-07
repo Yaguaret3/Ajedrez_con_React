@@ -1,5 +1,5 @@
-import { isEighthColumn, isFirstColumn } from '../board/ColumnsAndRows';
-import { movePiece } from '../moves/MovePiece';
+import { movePiece } from '../../utils/MovePiece';
+import { isEighthColumn, isFirstColumn } from '../../utils/ColumnsAndRows';
 import Piece from './Piece';
 
 export class Bishop extends Piece {
@@ -12,7 +12,7 @@ export class Bishop extends Piece {
 
     threats(board, playerToMove) {
 
-        let legalMoves = [];
+        let threats = [];
 
         if (playerToMove?.getAlliance() == this.alliance) {
             for (let vector of this.calculateCandidatesVector) {
@@ -24,7 +24,7 @@ export class Bishop extends Piece {
                     while (tileCandidate >= 0 && tileCandidate < 64 && !board[tileCandidate].isOccupied()) {
                         if (!this.firstColumnExclusion(vector, tileCandidate) && !this.eighthColumnExclusion(vector, tileCandidate)) {
 
-                            legalMoves.push(tileCandidate);
+                            threats.push(tileCandidate);
                             tileCandidate += vector;
                         } else {
                             break;
@@ -32,14 +32,12 @@ export class Bishop extends Piece {
                     }
                 }
                 if (tileCandidate >= 0 && tileCandidate < 64) {
-                    if (board[tileCandidate].getPiece()?.getAlliance() != this.alliance) {
-                        legalMoves.push(tileCandidate);
-                    }
+                    threats.push(tileCandidate);
                 }
             }
         }
 
-        return legalMoves;
+        return threats;
     }
 
     firstColumnExclusion(vector, lastTilePosition) {
@@ -60,13 +58,9 @@ export class Bishop extends Piece {
     legalMoves(board, playerToMove) {
 
         let kingPosition = -1;
-        const boardIsArray = Array.isArray(board);
-
-        if (boardIsArray) {
-            for (const tile of board) {
-                if (tile.getPiece()?.getPieceType() == "K") {
-                    kingPosition = tile.getCoordinate();
-                }
+        for (const tile of board) {
+            if (tile.getPiece()?.getPieceType() == "K" && tile.getPiece().getAlliance() == this.alliance) {
+                kingPosition = tile.getCoordinate();
             }
         }
 
@@ -83,7 +77,7 @@ export class Bishop extends Piece {
                         if (!this.firstColumnExclusion(vector, tileCandidate) && !this.eighthColumnExclusion(vector, tileCandidate)) {
 
                             const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
-                            if (!tempMove[kingPosition].isThreatened()) {
+                            if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
                                 legalMoves.push(tileCandidate);
                             }
                             tileCandidate += vector;
@@ -94,9 +88,8 @@ export class Bishop extends Piece {
                 }
                 if (tileCandidate >= 0 && tileCandidate < 64) {
                     if (board[tileCandidate].getPiece()?.getAlliance() != this.alliance) {
-                        // Fijarse que no quede el rey amenazado
                         const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
-                        if (!tempMove[kingPosition].isThreatened()) {
+                        if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
                             legalMoves.push(tileCandidate);
                         }
                     }

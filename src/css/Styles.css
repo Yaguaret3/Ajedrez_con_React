@@ -1,12 +1,14 @@
-.wrapper{
+#root{
     background-color: cadetblue;
 }
     
 .board {
-    top: 20%;
-    left: 35%;
-    position: fixed;
+    justify-self: center;
 }
+.row{
+    max-width: 90%;
+}
+
 .tile:nth-child(even){
     background-color: navajowhite;
 }
@@ -15,40 +17,26 @@
 }
 
 .tile{
-    height: 60px;
-    width: 60px;
-    display: inline-table;
+    height: 50px;
+    width: 50px;
+    display: inline-flex;
     border: 1px solid black;
-    font-size: 40px;
-    font-weight: bold;
     cursor: pointer;
 }
 .tile-optional-move{
-    height: 60px;
-    width: 60px;
-    display: inline-table;
+    height: 50px;
+    width: 50px;
+    display: inline-flex;
     border: 1px solid black;
     background-color: gold;
-    font-size: 40px;
-    font-weight: bold;
     cursor: pointer;
 }
 .tile-to-move{
-    height: 60px;
-    width: 60px;
-    display: inline-table;
     border: 2px solid red;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
 }
-
-
-.black-piece{
-    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
-    color: black;
+.tile img {
+    max-width: 100%;
 }
-.white-piece{
-    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
-    color: white;
+.tile-optional-move img {
+    max-width: 100%;
 }

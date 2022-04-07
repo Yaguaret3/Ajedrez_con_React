@@ -1,5 +1,5 @@
-import { isEighthColumn, isFirstColumn } from '../board/ColumnsAndRows';
-import { movePiece } from '../moves/MovePiece';
+import { movePiece } from '../../utils/MovePiece';
+import { isEighthColumn, isFirstColumn } from '../../utils/ColumnsAndRows';
 import Piece from './Piece';
 
 export class King extends Piece {
@@ -12,69 +12,68 @@ export class King extends Piece {
 
     threats(board, playerToMove) {
 
-        let legalMoves = [];
-        
+        let threats = [];
+
         if (playerToMove?.getAlliance() == this.alliance) {
-            
-            for (let candidate of this.calculateCandidates) {
-                let tileCandidate = this.position + candidate;
-    
+
+            for (const candidate of this.calculateCandidates) {
+                const tileCandidate = this.position + candidate;
+
                 if (this.firstColumnExclusion(candidate) ||
                     this.eighthColumnExclusion(candidate)) {
                     continue;
                 }
-    
+
                 if (tileCandidate > 0 && tileCandidate < 64) {
                     for (let tile of board) {
                         if (tileCandidate == tile.getCoordinate()) {
-                            if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
-                                legalMoves.push(tileCandidate);
-                            }
+                            threats.push(tileCandidate);
                         }
                     }
                 }
             }
         }
-
-        return legalMoves;
-
+        return threats;
     }
 
     legalMoves(board, playerToMove) {
 
         let legalMoves = [];
-        const boardIsArray = Array.isArray(board);
 
-        for (let candidate of this.calculateCandidates) {
-            let tileCandidate = this.position + candidate;
+        if (playerToMove?.getAlliance() == this.alliance) {
+            for (let candidate of this.calculateCandidates) {
+                const tileCandidate = this.position + candidate;
 
-            if (this.firstColumnExclusion(candidate) ||
-                this.eighthColumnExclusion(candidate)) {
-                continue;
-            }
+                if (this.firstColumnExclusion(candidate) ||
+                    this.eighthColumnExclusion(candidate)) {
+                    continue;
+                }
 
-            if (tileCandidate > 0 && tileCandidate < 64 && boardIsArray) {
-                for (let tile of board) {
-                    if (tileCandidate == tile.getCoordinate()) {
+                if (tileCandidate >= 0 && tileCandidate < 64) {
+                    for (let tile of board) {
+                        if (tileCandidate == tile.getCoordinate()) {
 
-                        if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
-                            const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
-                            console.log(tempMove[tileCandidate]);
-                            if (!tempMove[this.position].isThreatened()) {
-                                legalMoves.push(tileCandidate);
+                            if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
+                                const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
+                                let kingPosition = -1;
+                                for(const tile2 of tempMove){
+                                    if(tile2.getPiece()?.getPieceType() == "K" && tile2.getPiece().getAlliance() == this.alliance){
+                                        kingPosition = tile2.getCoordinate();
+                                    }
+                                }
+                                if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
+                                    legalMoves.push(tileCandidate);
+                                }
                             }
                         }
                     }
                 }
             }
+            // Castle - FIJARSE EN ENROQUES: TENGO QUE DESHABILITAR EL ENROQUE SI JAQUEADO
+            legalMoves.push(this.addKingSideCastle(board, playerToMove));
+            legalMoves.push(this.addQueenSideCastle(board, playerToMove));
+
         }
-
-
-        // Castle
-        legalMoves.push(this.addKingSideCastle(board));
-        legalMoves.push(this.addQueenSideCastle(board));
-
-
         return legalMoves;
     }
 
@@ -93,45 +92,55 @@ export class King extends Piece {
         }
         return answer;
     }
-    addKingSideCastle(board) {
-        const boardIsArray = Array.isArray(board);
-        if (boardIsArray && this.alliance == "white") {
+    addKingSideCastle(board, playerToMove) {
+        if (this.alliance == "white") {
             const rook = board[63].getPiece();
             if (!this.hasMoved() && (rook.getPieceType() == "R")
                 && !rook.hasMoved()
                 && !board[62].isOccupied()
-                && !board[61].isOccupied()) {
+                && !board[61].isOccupied()
+                && !board[this.position].isThreatened(board, playerToMove)
+                && !board[62].isThreatened(board, playerToMove)
+                && !board[61].isThreatened(board, playerToMove)) {
                 return 62;
             }
-        } else if (boardIsArray && this.alliance == "black") {
+        } else if (this.alliance == "black") {
             const rook = board[7].getPiece();
             if (!this.hasMoved() && (rook.getPieceType() == "R")
                 && !rook.hasMoved()
                 && !board[6].isOccupied()
-                && !board[5].isOccupied()) {
+                && !board[5].isOccupied()
+                && !board[this.position].isThreatened(board, playerToMove)
+                && !board[6].isThreatened(board, playerToMove)
+                && !board[5].isThreatened(board, playerToMove)) {
                 return 6;
             }
         }
     }
-    addQueenSideCastle(board) {
-        const boardIsArray = Array.isArray(board);
-        if (boardIsArray && this.alliance == "white") {
+    addQueenSideCastle(board, playerToMove) {
+        if (this.alliance == "white") {
             const rook = board[56].getPiece();
             if (!this.moved && (rook.getPieceType() == "R")
                 && !rook.hasMoved()
                 && !board[57].isOccupied()
                 && !board[58].isOccupied()
-                && !board[59].isOccupied()) {
+                && !board[59].isOccupied()
+                && !board[this.position].isThreatened(board, playerToMove)
+                && !board[58].isThreatened(board, playerToMove)
+                && !board[59].isThreatened(board, playerToMove)) {
                 return 58;
             }
         }
-        if (boardIsArray && this.alliance == "black") {
+        if (this.alliance == "black") {
             const rook = board[0].getPiece();
             if (!this.moved && (rook.getPieceType() == "R")
                 && !rook.hasMoved()
                 && !board[1].isOccupied()
                 && !board[2].isOccupied()
-                && !board[3].isOccupied()) {
+                && !board[3].isOccupied()
+                && !board[this.position].isThreatened(board, playerToMove)
+                && !board[2].isThreatened(board, playerToMove)
+                && !board[3].isThreatened(board, playerToMove)) {
                 return 2;
             }
         }

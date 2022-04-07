@@ -1,5 +1,10 @@
-import { isEighthColumn, isEighthRow } from "../board/ColumnsAndRows";
-import { CastlingMove, castlingMove, EnPassantMove, PawnJumpMove, PawnPromotionMove, StandardMove } from "./MoveMainClass";
+import { isEighthRow } from "./ColumnsAndRows";
+import { CastlingMove } from "../classes/moves/CastlingMove";
+import { EnPassantMove } from "../classes/moves/EnPassantMove";
+import { PawnJumpMove } from "../classes/moves/PawnJumpMove";
+import { PawnPromotionMove } from "../classes/moves/PawnPromotion.Move";
+import { StandardMove } from "../classes/moves/StandardMove";
+
 
 export function movePiece(origin, destination, board, playerToMove) {
 
@@ -9,11 +14,12 @@ export function movePiece(origin, destination, board, playerToMove) {
     const allianceToMove = pieceToMove.getAlliance();
     const destinationCoordinate = destination.getCoordinate();
 
+
     // Castling. Si el rey no se movió, y tiene como coordenada posible las de enroque, es porque la torre tampoco se movió!
     if (pieceType == "K" && !pieceToMove.hasMoved() &&
-        (allianceToMove == "white" && (destinationCoordinate == 62 || destinationCoordinate == 58)) ||
-        (allianceToMove == "black" && (destinationCoordinate == 2 || destinationCoordinate == 6))) {
-
+        ((allianceToMove == "white" && (destinationCoordinate == 62 || destinationCoordinate == 58)) ||
+        (allianceToMove == "black" && (destinationCoordinate == 2 || destinationCoordinate == 6)))) {
+            
         return new CastlingMove(pieceToMove, destinationCoordinate, board, playerToMove).execute();
     }
 
@@ -40,9 +46,10 @@ export function movePiece(origin, destination, board, playerToMove) {
         if(isEighthRow(allianceToMove, destinationCoordinate)){
 
             let pieceTypeChosen = "";
-            do{
-                pieceTypeChosen = prompt("Please, choose your promotion PieceType:\nQ for Queen\nN for Knight\nB for Bishop\nR for Rook", "Do not cancel!").toUpperCase;
-            }while(pieceTypeChosen != "Q" || pieceTypeChosen == "N" || pieceTypeChosen == "B" || pieceTypeChosen == "R");
+            pieceTypeChosen = prompt("Please, choose your promotion PieceType:\nQ for Queen\nN for Knight\nB for Bishop\nR for Rook", "Do not cancel!");
+            /*do{
+                
+            }while(pieceTypeChosen != "Q" || pieceTypeChosen != "N" || pieceTypeChosen != "B" || pieceTypeChosen != "R");*/
 
             return new PawnPromotionMove(pieceToMove,destinationCoordinate, board, playerToMove).execute(pieceTypeChosen); 
         }

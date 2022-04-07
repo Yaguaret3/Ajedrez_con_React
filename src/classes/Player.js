@@ -9,7 +9,6 @@ export class Player{
     }
 
     getTotalLegalMoves(board){
-
         let legalMoves = []
         if(Array.isArray(board)){
             for(const tile of board){
@@ -21,6 +20,24 @@ export class Player{
         }
         return legalMoves;
     }
+    // En los arrays se REPITEN! Quizás hacer un Set.
+    getTilesThatThreatens(board){
+        let tilesAttacked = []
+        if(Array.isArray(board)){
+            for(const tile of board){
+                const piece = tile.getPiece();
+                if(piece?.getAlliance() == this.alliance){
+                    const threats = piece.threats(board, this);
+                    if(threats.length >0){
+                        for(const threat of threats){
+                            tilesAttacked.push(threat);
+                        }
+                    }
+                }
+            }
+        }
+        return tilesAttacked;
+    }
 
     getKing(board){
         for(const tile of board){
@@ -30,27 +47,7 @@ export class Player{
             }
         }
     }
-    getOpponentMoves(board){
-
-        let opponentMoves = []
-        let opponentAlliance = "";
-        if(this.alliance == "white"){
-            opponentAlliance = "black";
-        } else if(this.alliance == "black"){
-            opponentAlliance = "white";
-        }
-
-        const opponent = new Player(opponentAlliance ,board);
-        
-        for(const tile of board){
-            const piece = tile.getPiece();
-            const pieceAlliance = piece?.getAlliance();
-            if(pieceAlliance != this.alliance){
-                opponentMoves.concat(piece?.threats(board, opponent));
-            }
-        }
-        return opponentMoves;
-    }
+    
     isInCheck(){
         for(let opponentMove of this.opponentMoves){
             if(opponentMove == this.king.getPosition()){

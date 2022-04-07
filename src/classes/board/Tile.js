@@ -1,49 +1,52 @@
 import { Player } from "../Player";
 
-export class Tile{
-    constructor(piece, coordinate, board, playerToMove){
+export class Tile {
+    constructor(piece, coordinate) {
         this.piece = piece;
         this.coordinate = coordinate;
         this.isLegalMove = false;
-        this.playerToMove = playerToMove;
-        this.threated = this.isThreatened(board);
     }
 
-    setLegalMove(toggle){
+    setLegalMove(toggle) {
         this.isLegalMove = toggle;
     }
 
-    getCoordinate(){
+    getCoordinate() {
         return this.coordinate;
     }
 
-    setPiece(piece){
+    setPiece(piece) {
         this.piece = piece;
     }
 
-    isOccupied(){
-        if(this.piece == null){
+    isOccupied() {
+        if (this.piece == null) {
             return false;
         }
         return true;
     }
 
-    getPiece(){
+    getPiece() {
         return this.piece;
     }
-    getLegalMove(){
+    getLegalMove() {
         return this.isLegalMove;
     }
-    isThreatened(board){
-        /*if(Array.isArray(board)){
-            const opponentMoves = new Player(this.playerToMove.getAlliance(), board).getOpponentMoves(board);
-            for(const move of opponentMoves){
-                if(move == this.coordinate){
-                    return true;
-                }
+    isThreatened(board, playerToMove) {
+
+        let opponent = null;
+        if (playerToMove.getAlliance() == "white") {
+            opponent = new Player("black");
+        } else if (playerToMove.getAlliance() == "black") {
+            opponent = new Player("white");
+        }
+        const opponentThreats = opponent.getTilesThatThreatens(board);
+        for (const threat of opponentThreats) {
+            if (threat == this.coordinate) {
+                return true;
             }
-        }*/
-        
+        }
+
         return false;
     }
 

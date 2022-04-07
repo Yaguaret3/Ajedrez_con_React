@@ -1,5 +1,5 @@
-import { isEighthColumn, isFirstColumn, isSecondColumn, isSeventhColumn } from '../board/ColumnsAndRows';
-import { movePiece } from '../moves/MovePiece';
+import { movePiece } from '../../utils/MovePiece';
+import { isEighthColumn, isFirstColumn, isSecondColumn, isSeventhColumn } from '../../utils/ColumnsAndRows';
 import Piece from './Piece';
 
 export class Knight extends Piece {
@@ -12,7 +12,7 @@ export class Knight extends Piece {
 
     threats(board, playerToMove) {
 
-        let legalMoves = [];
+        let threats = [];
 
         if (playerToMove?.getAlliance() == this.alliance) {
 
@@ -28,57 +28,52 @@ export class Knight extends Piece {
                 if (tileCandidate > 0 && tileCandidate < 64) {
                     for (let tile of board) {
                         if (tileCandidate == tile.getCoordinate()) {
-
-                            if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
-                                legalMoves.push(tileCandidate);
-                            }
+                            threats.push(tileCandidate);
                         }
                     }
                 }
             }
         }
-        return legalMoves;
+        return threats;
     }
 
     legalMoves(board, playerToMove) {
 
         let kingPosition = -1;
-        const boardIsArray = Array.isArray(board);
-
-        if (boardIsArray) {
-            for (const tile of board) {
-                if (tile.getPiece()?.getPieceType() == "K") {
-                    kingPosition = tile.getCoordinate();
-                }
+        for (const tile of board) {
+            if (tile.getPiece()?.getPieceType() == "K" && tile.getPiece().getAlliance() == this.alliance) {
+                kingPosition = tile.getCoordinate();
             }
         }
 
         let legalMoves = [];
 
-        for (let candidate of this.calculateCandidates) {
-            let tileCandidate = this.position + candidate;
-            if (this.firstColumnExclusion(candidate) ||
-                this.eighthColumnExclusion(candidate) ||
-                this.secondColumnExclusion(candidate) ||
-                this.seventhColumnExclusion(candidate)) {
-                continue;
-            }
-
-            if (tileCandidate > 0 && tileCandidate < 64 && boardIsArray) {
-                for (let tile of board) {
-                    if (tileCandidate == tile.getCoordinate()) {
-
-                        if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
-                            const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
-                            if (!tempMove[kingPosition].isThreatened()) {
-                                legalMoves.push(tileCandidate);
+        if (playerToMove?.getAlliance() == this.alliance) {
+        
+            for (let candidate of this.calculateCandidates) {
+                if (this.firstColumnExclusion(candidate) ||
+                    this.eighthColumnExclusion(candidate) ||
+                    this.secondColumnExclusion(candidate) ||
+                    this.seventhColumnExclusion(candidate)) {
+                    continue;
+                }
+                const tileCandidate = this.position + candidate;
+    
+                if (tileCandidate >= 0 && tileCandidate < 64) {
+                    for (const tile of board) {
+                        if (tileCandidate == tile.getCoordinate()) {
+    
+                            if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
+                                const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
+                                if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
+                                    legalMoves.push(tileCandidate);
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
         return legalMoves;
     }
 
