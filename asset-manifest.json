@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Ajedrez_con_React/static/css/main.39f1c5e1.css",
+    "main.js": "/Ajedrez_con_React/static/js/main.e8a5a93e.js",
+    "static/js/787.178b6958.chunk.js": "/Ajedrez_con_React/static/js/787.178b6958.chunk.js",
+    "index.html": "/Ajedrez_con_React/index.html",
+    "main.39f1c5e1.css.map": "/Ajedrez_con_React/static/css/main.39f1c5e1.css.map",
+    "main.e8a5a93e.js.map": "/Ajedrez_con_React/static/js/main.e8a5a93e.js.map",
+    "787.178b6958.chunk.js.map": "/Ajedrez_con_React/static/js/787.178b6958.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.39f1c5e1.css",
+    "static/js/main.e8a5a93e.js"
+  ]
+}
