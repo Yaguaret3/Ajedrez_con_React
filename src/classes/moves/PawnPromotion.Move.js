@@ -13,9 +13,9 @@ export class PawnPromotionMove extends MoveMainClass{
         const originCoordinate = this.pieceToMove.getPosition();
 
         for(let i=0;i<64;i++){
-            if(i == originCoordinate){
+            if(i === originCoordinate){
                 newTiles[i] = EmptyTiles.get(i);
-            } else if(i == this.destinationCoordinate && pieceAlliance == "white"){
+            } else if(i === this.destinationCoordinate && pieceAlliance === "white"){
                 let newTile = {}
 
                 // La diferencia con el StandardMove es que la pieza a ubicarse en el casillero de destino es la elegida, que vino por parámetro.
@@ -36,7 +36,7 @@ export class PawnPromotionMove extends MoveMainClass{
                 newTile.getPiece().alreadyMovedPiece();
                 newTiles[i] = newTile;
                 //Ponemos la pieza en su nuevo lugar si es negra
-            } else if(i == this.destinationCoordinate && pieceAlliance == "black"){
+            } else if(i === this.destinationCoordinate && pieceAlliance === "black"){
                 let newTile = {}
                 switch(pieceTypeChosen){
                     case "R":

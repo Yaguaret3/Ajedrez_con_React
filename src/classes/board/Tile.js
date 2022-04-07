@@ -20,7 +20,7 @@ export class Tile {
     }
 
     isOccupied() {
-        if (this.piece == null) {
+        if (this.piece === null) {
             return false;
         }
         return true;
@@ -35,14 +35,14 @@ export class Tile {
     isThreatened(board, playerToMove) {
 
         let opponent = null;
-        if (playerToMove.getAlliance() == "white") {
+        if (playerToMove.getAlliance() === "white") {
             opponent = new Player("black");
-        } else if (playerToMove.getAlliance() == "black") {
+        } else if (playerToMove.getAlliance() === "black") {
             opponent = new Player("white");
         }
         const opponentThreats = opponent.getTilesThatThreatens(board);
         for (const threat of opponentThreats) {
-            if (threat == this.coordinate) {
+            if (threat === this.coordinate) {
                 return true;
             }
         }

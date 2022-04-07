@@ -14,7 +14,7 @@ export class King extends Piece {
 
         let threats = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
 
             for (const candidate of this.calculateCandidates) {
                 const tileCandidate = this.position + candidate;
@@ -26,7 +26,7 @@ export class King extends Piece {
 
                 if (tileCandidate > 0 && tileCandidate < 64) {
                     for (let tile of board) {
-                        if (tileCandidate == tile.getCoordinate()) {
+                        if (tileCandidate === tile.getCoordinate()) {
                             threats.push(tileCandidate);
                         }
                     }
@@ -40,7 +40,7 @@ export class King extends Piece {
 
         let legalMoves = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
             for (let candidate of this.calculateCandidates) {
                 const tileCandidate = this.position + candidate;
 
@@ -51,13 +51,13 @@ export class King extends Piece {
 
                 if (tileCandidate >= 0 && tileCandidate < 64) {
                     for (let tile of board) {
-                        if (tileCandidate == tile.getCoordinate()) {
+                        if (tileCandidate === tile.getCoordinate()) {
 
-                            if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
+                            if (!tile.isOccupied() || tile.getPiece().getAlliance() !== this.alliance) {
                                 const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
                                 let kingPosition = -1;
                                 for(const tile2 of tempMove){
-                                    if(tile2.getPiece()?.getPieceType() == "K" && tile2.getPiece().getAlliance() == this.alliance){
+                                    if(tile2.getPiece()?.getPieceType() === "K" && tile2.getPiece().getAlliance() === this.alliance){
                                         kingPosition = tile2.getCoordinate();
                                     }
                                 }
@@ -69,7 +69,7 @@ export class King extends Piece {
                     }
                 }
             }
-            // Castle - FIJARSE EN ENROQUES: TENGO QUE DESHABILITAR EL ENROQUE SI JAQUEADO
+            // Castle 
             legalMoves.push(this.addKingSideCastle(board, playerToMove));
             legalMoves.push(this.addQueenSideCastle(board, playerToMove));
 
@@ -79,7 +79,7 @@ export class King extends Piece {
 
     firstColumnExclusion(candidate) {
         let answer = false;
-        if (isFirstColumn(this.position) && (candidate == -9 || candidate == -1 || candidate == 7)) {
+        if (isFirstColumn(this.position) && (candidate === -9 || candidate === -1 || candidate === 7)) {
             answer = true;
         }
         return answer;
@@ -87,15 +87,15 @@ export class King extends Piece {
 
     eighthColumnExclusion(candidate) {
         let answer = false;
-        if (isEighthColumn(this.position) && (candidate == -7 || candidate == 1 || candidate == 9)) {
+        if (isEighthColumn(this.position) && (candidate === -7 || candidate === 1 || candidate === 9)) {
             answer = true;
         }
         return answer;
     }
     addKingSideCastle(board, playerToMove) {
-        if (this.alliance == "white") {
+        if (this.alliance === "white") {
             const rook = board[63].getPiece();
-            if (!this.hasMoved() && (rook.getPieceType() == "R")
+            if (!this.hasMoved() && (rook?.getPieceType() === "R")
                 && !rook.hasMoved()
                 && !board[62].isOccupied()
                 && !board[61].isOccupied()
@@ -104,9 +104,9 @@ export class King extends Piece {
                 && !board[61].isThreatened(board, playerToMove)) {
                 return 62;
             }
-        } else if (this.alliance == "black") {
+        } else if (this.alliance === "black") {
             const rook = board[7].getPiece();
-            if (!this.hasMoved() && (rook.getPieceType() == "R")
+            if (!this.hasMoved() && (rook?.getPieceType() === "R")
                 && !rook.hasMoved()
                 && !board[6].isOccupied()
                 && !board[5].isOccupied()
@@ -118,9 +118,9 @@ export class King extends Piece {
         }
     }
     addQueenSideCastle(board, playerToMove) {
-        if (this.alliance == "white") {
+        if (this.alliance === "white") {
             const rook = board[56].getPiece();
-            if (!this.moved && (rook.getPieceType() == "R")
+            if (!this.moved && (rook?.getPieceType() === "R")
                 && !rook.hasMoved()
                 && !board[57].isOccupied()
                 && !board[58].isOccupied()
@@ -131,9 +131,9 @@ export class King extends Piece {
                 return 58;
             }
         }
-        if (this.alliance == "black") {
+        if (this.alliance === "black") {
             const rook = board[0].getPiece();
-            if (!this.moved && (rook.getPieceType() == "R")
+            if (!this.moved && (rook?.getPieceType() === "R")
                 && !rook.hasMoved()
                 && !board[1].isOccupied()
                 && !board[2].isOccupied()

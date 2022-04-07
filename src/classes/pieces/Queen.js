@@ -14,7 +14,7 @@ export class Queen extends Piece {
 
         let legalMoves = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
 
             for (let vector of this.calculateCandidatesVector) {
                 if (this.firstColumnExclusion(vector, this.position) || this.eighthColumnExclusion(vector, this.position)) {
@@ -45,14 +45,14 @@ export class Queen extends Piece {
         let kingPosition = -1;
 
         for (const tile of board) {
-            if (tile.getPiece()?.getPieceType() == "K" && tile.getPiece().getAlliance() == this.alliance) {
+            if (tile.getPiece()?.getPieceType() === "K" && tile.getPiece().getAlliance() === this.alliance) {
                 kingPosition = tile.getCoordinate();
             }
         }
 
         let legalMoves = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
 
             for (let vector of this.calculateCandidatesVector) {
                 if (this.firstColumnExclusion(vector, this.position) || this.eighthColumnExclusion(vector, this.position)) {
@@ -74,7 +74,7 @@ export class Queen extends Piece {
                     }
                 }
                 if (tileCandidate >= 0 && tileCandidate < 64) {
-                    if (board[tileCandidate].getPiece()?.getAlliance() != this.alliance) {
+                    if (board[tileCandidate].getPiece()?.getAlliance() !== this.alliance) {
                         const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
                         if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
                             legalMoves.push(tileCandidate);
@@ -88,14 +88,14 @@ export class Queen extends Piece {
 
     firstColumnExclusion(vector, lastTilePosition) {
         let answer = false;
-        if (isFirstColumn(lastTilePosition) && (vector == -1 || vector == -9 || vector == 7)) {
+        if (isFirstColumn(lastTilePosition) && (vector === -1 || vector === -9 || vector === 7)) {
             answer = true;
         }
         return answer;
     }
     eighthColumnExclusion(vector, lastTilePosition) {
         let answer = false;
-        if (isEighthColumn(lastTilePosition) && (vector == 1 || vector == -7 || vector == 9)) {
+        if (isEighthColumn(lastTilePosition) && (vector === 1 || vector === -7 || vector === 9)) {
             answer = true;
         }
         return answer;

@@ -4,7 +4,7 @@ export function isFirstColumn(position){
     let answer = false;
 
     for(const firstColumnCoordinate of firstColumn){
-        if(position == firstColumnCoordinate){
+        if(position === firstColumnCoordinate){
             answer = true;
         }
     }
@@ -16,7 +16,7 @@ export function isSecondColumn(position){
     let answer = false;
 
     for(const secondColumnCoordinate of secondColumn){
-        if(position == secondColumnCoordinate){
+        if(position === secondColumnCoordinate){
             answer = true;
         }
     }
@@ -28,7 +28,7 @@ export function isThirdColumn(position){
     let answer = false;
 
     for(const thirdColumnCoordinate of thirdColumn){
-        if(position == thirdColumnCoordinate){
+        if(position === thirdColumnCoordinate){
             answer = true;
         }
     }
@@ -40,7 +40,7 @@ export function isFourthColumn(position){
     let answer = false;
 
     for(const fourthColumnCoordinate of fourthColumn){
-        if(position == fourthColumnCoordinate){
+        if(position === fourthColumnCoordinate){
             answer = true;
         }
     }
@@ -52,7 +52,7 @@ export function isFifthColumn(position){
     let answer = false;
 
     for(const fifthColumnCoordinate of fifthColumn){
-        if(position == fifthColumnCoordinate){
+        if(position === fifthColumnCoordinate){
             answer = true;
         }
     }
@@ -64,7 +64,7 @@ export function isSixthColumn(position){
     let answer = false;
 
     for(const sixthColumnCoordinate of sixthColumn){
-        if(position == sixthColumnCoordinate){
+        if(position === sixthColumnCoordinate){
             answer = true;
         }
     }
@@ -76,7 +76,7 @@ export function isSeventhColumn(position){
     let answer = false;
 
     for(const seventhColumnCoordinate of seventhColumn){
-        if(position == seventhColumnCoordinate){
+        if(position === seventhColumnCoordinate){
             answer = true;
         }
     }
@@ -88,7 +88,7 @@ export function isEighthColumn(position){
     let answer = false;
 
     for(const eighthColumnCoordinate of eighthColumn){
-        if(position == eighthColumnCoordinate){
+        if(position === eighthColumnCoordinate){
             answer = true;
         }
     }
@@ -97,13 +97,13 @@ export function isEighthColumn(position){
 export function isFifthRow(alliance, position){
     let answer = false;
     let fifthRow = [];
-    if(alliance == "white"){
+    if(alliance === "white"){
         fifthRow = [24,25,26,27,28,29,30,31] 
-    } else if(alliance == "black"){
+    } else if(alliance === "black"){
         fifthRow = [32,33,34,35,36,37,38,39] 
     }
     for(const fifthRowCoordinate of fifthRow){
-        if(position == fifthRowCoordinate){
+        if(position === fifthRowCoordinate){
             answer = true;
         }
     }
@@ -112,13 +112,13 @@ export function isFifthRow(alliance, position){
 export function isEighthRow(alliance, position){
     let answer = false;
     let eighthRow = [];
-    if(alliance == "white"){
+    if(alliance === "white"){
         eighthRow = [0,1,2,3,4,5,6,7] 
-    } else if(alliance == "black"){
+    } else if(alliance === "black"){
         eighthRow = [56,57,58,59,60,61,62,63] 
     }
     for(const eighthRowCoordinate of eighthRow){
-        if(position == eighthRowCoordinate){
+        if(position === eighthRowCoordinate){
             answer = true;
         }
     }

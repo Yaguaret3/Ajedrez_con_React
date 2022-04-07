@@ -13,10 +13,10 @@ export class PawnJumpMove extends MoveMainClass{
         let newTiles = []
 
         for(let i=0;i<64;i++){
-            if(i == originCoordinate){
+            if(i === originCoordinate){
                 newTiles[i] = EmptyTiles.get(i);
                 //Blanca
-            } else if(i == this.destinationCoordinate && pieceAlliance == "white"){
+            } else if(i === this.destinationCoordinate && pieceAlliance === "white"){
                 let newTile = WhitePawnTiles.get(i);
                 newTile.getPiece().alreadyMovedPiece();
 
@@ -26,7 +26,7 @@ export class PawnJumpMove extends MoveMainClass{
                 
                 newTiles[i] = newTile;
                 //Negra
-            } else if(i == this.destinationCoordinate && pieceAlliance == "black"){
+            } else if(i === this.destinationCoordinate && pieceAlliance === "black"){
                 let newTile = blackPawnTiles.get(i);
                 newTile.getPiece().alreadyMovedPiece();
                 newTile.getPiece().setPawnJump();

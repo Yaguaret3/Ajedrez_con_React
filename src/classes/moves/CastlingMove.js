@@ -30,28 +30,28 @@ export class CastlingMove extends MoveMainClass {
         const originCoordinate = this.pieceToMove.getPosition();
 
         for (let i = 0; i < 64; i++) {
-            if (i == originCoordinate) {
+            if (i === originCoordinate) {
                 //Vaciamos el escaque de origen
                 newTiles[i] = EmptyTiles.get(i);
                 //Ponemos la pieza en su nuevo lugar si es blanca
-            } else if (i == this.destinationCoordinate && pieceAlliance == "white") {
+            } else if (i === this.destinationCoordinate && pieceAlliance === "white") {
                 let newTile = WhiteKingTiles.get(i);
                 newTile.getPiece().alreadyMovedPiece();
                 newTiles[i] = newTile;
                 //Ponemos la pieza en su nuevo lugar si es negra
-            } else if (i == this.destinationCoordinate && pieceAlliance == "black") {
+            } else if (i === this.destinationCoordinate && pieceAlliance === "black") {
                 let newTile = blackKingTiles.get(i);
                 newTile.getPiece().alreadyMovedPiece();
                 newTiles[i] = newTile;
 
 
                 //Diferencia con StandardMove es que vaciamos el escaque de la torre, y 
-            } else if (i == rookOrigin) {
+            } else if (i === rookOrigin) {
                 newTiles[i] = EmptyTiles.get(i);
                 //Ponemos la torre en su nuevo lugar
-            } else if (i == rookDestination && pieceAlliance == "white") {
+            } else if (i === rookDestination && pieceAlliance === "white") {
                 newTiles[i] = WhiteRooksTiles.get(i);
-            } else if (i == rookDestination && pieceAlliance == "black") {
+            } else if (i === rookDestination && pieceAlliance === "black") {
                 newTiles[i] = blackRooksTiles.get(i);
 
 

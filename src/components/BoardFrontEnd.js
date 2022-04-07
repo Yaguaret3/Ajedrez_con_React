@@ -23,9 +23,13 @@ export default function BoardFrontEnd() {
         showLegalMoves();
     }, [legalMoves]);
 
+    useEffect(() => {
+        playerToMove.endOfGame(tiles);
+    },[playerToMove]);
+
     const getTile = (coordinate, board) => {
         for (let tile of board) {
-            if (tile.getCoordinate() == coordinate) {
+            if (tile.getCoordinate() === coordinate) {
                 return tile;
             }
         }
@@ -37,29 +41,29 @@ export default function BoardFrontEnd() {
         setPlayerToWait(blackPlayer);
 
         let newBoard = [];
-        for(let i = 0; i<64; i++){
-            
-            if (i == 0 || i == 7) {
+        for (let i = 0; i < 64; i++) {
+
+            if (i === 0 || i === 7) {
                 newBoard.push(blackRooksTiles.get(i));
-            } else if (i == 1 || i == 6) {
+            } else if (i === 1 || i === 6) {
                 newBoard.push(blackKnightTiles.get(i));
-            } else if (i == 2 || i == 5) {
+            } else if (i === 2 || i === 5) {
                 newBoard.push(blackBishopTiles.get(i));
-            } else if (i == 3) {
+            } else if (i === 3) {
                 newBoard.push(blackQueenTiles.get(i));
-            } else if (i == 4) {
+            } else if (i === 4) {
                 newBoard.push(blackKingTiles.get(i));
             } else if (i > 7 && i < 16) {
                 newBoard.push(blackPawnTiles.get(i));
-            } else if (i == 63 || i == 56) {
+            } else if (i === 63 || i === 56) {
                 newBoard.push(WhiteRooksTiles.get(i));
-            } else if (i == 62 || i == 57) {
+            } else if (i === 62 || i === 57) {
                 newBoard.push(WhiteKnightTiles.get(i));
-            } else if (i == 61 || i == 58) {
+            } else if (i === 61 || i === 58) {
                 newBoard.push(WhiteBishopTiles.get(i));
-            } else if (i == 60) {
+            } else if (i === 60) {
                 newBoard.push(WhiteKingTiles.get(i));
-            } else if (i == 59) {
+            } else if (i === 59) {
                 newBoard.push(WhiteQueenTiles.get(i));
             } else if (i < 56 && i > 47) {
                 newBoard.push(WhitePawnTiles.get(i));
@@ -69,27 +73,30 @@ export default function BoardFrontEnd() {
         }
 
         setTiles(newBoard);
+
     }
 
     const selectTile = (tile) => {
 
-        if (legalMoves.length == 0 && tile.getPiece() != null) {
+
+        if (legalMoves.length === 0 && tile.getPiece() !== null) {
             setTileWithLegalMoves(tile);
             setLegalMoves(tile.getPiece().legalMoves(tiles, playerToMove));
         } else {
             let matches = false;
             for (let legalMove of legalMoves) {
-                if (legalMove == tile.getCoordinate()) {
+                if (legalMove === tile.getCoordinate()) {
                     matches = true;
                     break;
                 }
             }
-            if (matches == true) {
+            if (matches === true) {
                 const newBoard = movePiece(previousTileSelected, tile, tiles, playerToMove);
                 setTiles(newBoard);
                 const temp = playerToMove;
                 setPlayerToMove(playerToWait);
                 setPlayerToWait(temp);
+
             }
             setTileWithLegalMoves(new Tile(null, -1, playerToMove));
             setLegalMoves([]);
@@ -99,7 +106,7 @@ export default function BoardFrontEnd() {
     const showLegalMoves = () => {
 
         let newTiles = [];
-        if (legalMoves.length != 0) {
+        if (legalMoves.length !== 0) {
             for (let tile of tiles) {
                 newTiles.push(tile);
             }
@@ -129,7 +136,7 @@ export default function BoardFrontEnd() {
             </button>
             <div className="board">
                 {tiles.map(tile => {
-                    if (tile.getCoordinate() % 8 == 0) {
+                    if (tile.getCoordinate() % 8 === 0) {
                         return <><br /><TileFrontEnd tile={tile} selectTile={selectTile} tileWithLegalMoves={tileWithLegalMoves} /></>
 
                     } else {

@@ -14,7 +14,7 @@ export class Knight extends Piece {
 
         let threats = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
 
             for (let candidate of this.calculateCandidates) {
                 let tileCandidate = this.position + candidate;
@@ -27,7 +27,7 @@ export class Knight extends Piece {
 
                 if (tileCandidate > 0 && tileCandidate < 64) {
                     for (let tile of board) {
-                        if (tileCandidate == tile.getCoordinate()) {
+                        if (tileCandidate === tile.getCoordinate()) {
                             threats.push(tileCandidate);
                         }
                     }
@@ -41,14 +41,14 @@ export class Knight extends Piece {
 
         let kingPosition = -1;
         for (const tile of board) {
-            if (tile.getPiece()?.getPieceType() == "K" && tile.getPiece().getAlliance() == this.alliance) {
+            if (tile.getPiece()?.getPieceType() === "K" && tile.getPiece().getAlliance() === this.alliance) {
                 kingPosition = tile.getCoordinate();
             }
         }
 
         let legalMoves = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
         
             for (let candidate of this.calculateCandidates) {
                 if (this.firstColumnExclusion(candidate) ||
@@ -61,9 +61,9 @@ export class Knight extends Piece {
     
                 if (tileCandidate >= 0 && tileCandidate < 64) {
                     for (const tile of board) {
-                        if (tileCandidate == tile.getCoordinate()) {
+                        if (tileCandidate === tile.getCoordinate()) {
     
-                            if (!tile.isOccupied() || tile.getPiece().getAlliance() != this.alliance) {
+                            if (!tile.isOccupied() || tile.getPiece().getAlliance() !== this.alliance) {
                                 const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
                                 if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
                                     legalMoves.push(tileCandidate);
@@ -79,28 +79,28 @@ export class Knight extends Piece {
 
     firstColumnExclusion(candidate) {
         let answer = false;
-        if (isFirstColumn(this.position) && (candidate == -17 || candidate == -10 || candidate == 6 || candidate == 15)) {
+        if (isFirstColumn(this.position) && (candidate === -17 || candidate === -10 || candidate === 6 || candidate === 15)) {
             answer = true;
         }
         return answer;
     }
     eighthColumnExclusion(candidate) {
         let answer = false;
-        if (isEighthColumn(this.position) && (candidate == -15 || candidate == -6 || candidate == 10 || candidate == 17)) {
+        if (isEighthColumn(this.position) && (candidate === -15 || candidate === -6 || candidate === 10 || candidate === 17)) {
             answer = true;
         }
         return answer;
     }
     secondColumnExclusion(candidate) {
         let answer = false;
-        if (isSecondColumn(this.position) && (candidate == -10 || candidate == 6)) {
+        if (isSecondColumn(this.position) && (candidate === -10 || candidate === 6)) {
             answer = true;
         }
         return answer;
     }
     seventhColumnExclusion(candidate) {
         let answer = false;
-        if (isSeventhColumn(this.position) && (candidate == -6 || candidate == 10)) {
+        if (isSeventhColumn(this.position) && (candidate === -6 || candidate === 10)) {
             answer = true;
         }
         return answer;

@@ -1,37 +1,39 @@
-export class Player{
+export class Player {
 
-    constructor(alliance){
+    constructor(alliance) {
         this.alliance = alliance;
     }
 
-    getAlliance(){
+    getAlliance() {
         return this.alliance;
     }
 
-    getTotalLegalMoves(board){
+    getTotalLegalMoves(board) {
         let legalMoves = []
-        if(Array.isArray(board)){
-            for(const tile of board){
-                const piece = tile.getPiece();
-                if(piece?.getAlliance() == this.alliance){
-                    legalMoves.concat(piece.legalMoves(board, this));
+        for (const tile of board) {
+            const piece = tile.getPiece();
+            if (piece?.getAlliance() == this.alliance) {
+                const moves = piece.legalMoves(board, this);
+                if (moves.length > 0) {
+                    for (const move of moves) {
+                        legalMoves.push(move);
+                    }
                 }
             }
         }
+        
         return legalMoves;
     }
     // En los arrays se REPITEN! Quizás hacer un Set.
-    getTilesThatThreatens(board){
+    getTilesThatThreatens(board) {
         let tilesAttacked = []
-        if(Array.isArray(board)){
-            for(const tile of board){
-                const piece = tile.getPiece();
-                if(piece?.getAlliance() == this.alliance){
-                    const threats = piece.threats(board, this);
-                    if(threats.length >0){
-                        for(const threat of threats){
-                            tilesAttacked.push(threat);
-                        }
+        for (const tile of board) {
+            const piece = tile.getPiece();
+            if (piece?.getAlliance() == this.alliance) {
+                const threats = piece.threats(board, this);
+                if (threats.length > 0) {
+                    for (const threat of threats) {
+                        tilesAttacked.push(threat);
                     }
                 }
             }
@@ -39,36 +41,39 @@ export class Player{
         return tilesAttacked;
     }
 
-    getKing(board){
-        for(const tile of board){
+    getKing(board) {
+        for (const tile of board) {
             const piece = tile.getPiece();
-            if(piece?.getAlliance() == this.alliance && piece?.getPieceType() == "K"){
+            if (piece?.getAlliance() == this.alliance && piece?.getPieceType() == "K") {
                 return piece;
             }
         }
     }
-    
-    isInCheck(){
-        for(let opponentMove of this.opponentMoves){
-            if(opponentMove == this.king.getPosition()){
-                return true;
+
+    endOfGame(board) {
+
+        let kingPosition = -1;
+        const legalMoves = this.getTotalLegalMoves(board);
+        for (const tile of board) {
+            const piece = tile.getPiece();
+            if (piece?.getPieceType() == "K" && piece?.getAlliance() == this.alliance) {
+                kingPosition = tile.getCoordinate();
             }
         }
-        return false;
-    }
-    isInCheckMate(){
-        if(this.inCheck && this.totalLegalMoves.length == 0){
-            alert(this.alliance +" is in CheckMate!")
-            return true;
+        if(board.length == 0){
+            return;
+        } else if (board[kingPosition].isThreatened(board, this)) {
+
+            // AQUÍ DEBERÍA SER "legalMoves.lenght == 0", PERO COMO PUSHEAMOS LOS ENROQUES EN LEGALMOVES, CUANDO SON IMPOSIBLES QUEDAN UNDEFINED, PERO EXISTENTES
+            if (legalMoves.length < 3) {
+                alert("Checkmate on " + this.alliance + "!");
+                return;
+            }
+
+            alert("Check on " + this.alliance)
+        } else if (legalMoves.length < 3) {
+            alert("Stalemate! Both players draw");
         }
-        return false;
-    }
-    isInStaleMate(){
-        if(!this.inCheck && this.totalLegalMoves.length == 0){
-            //alert("Stalemate! End of the game.");
-            return true;
-        }
-        return false;
     }
 
 }

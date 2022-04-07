@@ -15,10 +15,10 @@ export class EnPassantMove extends MoveMainClass {
         const originCoordinate = this.pieceToMove.getPosition();
 
         for (let i = 0; i < 64; i++) {
-            if (i == originCoordinate) {
+            if (i === originCoordinate) {
                 newTiles[i] = EmptyTiles.get(i);
                 //Blanca
-            } else if (i == this.destinationCoordinate && pieceAlliance == "white") {
+            } else if (i === this.destinationCoordinate && pieceAlliance === "white") {
                 let newTile = {}
                 switch (pieceType) {
                     case "R":
@@ -43,7 +43,7 @@ export class EnPassantMove extends MoveMainClass {
                 newTile.getPiece().alreadyMovedPiece();
                 newTiles[i] = newTile;
                 //Negra
-            } else if (i == this.destinationCoordinate && pieceAlliance == "black") {
+            } else if (i === this.destinationCoordinate && pieceAlliance === "black") {
                 let newTile = {}
                 switch (pieceType) {
                     case "R":
@@ -70,7 +70,7 @@ export class EnPassantMove extends MoveMainClass {
 
 
                 //La diferencia con el standardMove es que vaciamos el escaque de la pieza tomada al paso
-            } else if (i == pieceToTakePosition) {
+            } else if (i === pieceToTakePosition) {
                 newTiles[i] = EmptyTiles.get(i);
 
 

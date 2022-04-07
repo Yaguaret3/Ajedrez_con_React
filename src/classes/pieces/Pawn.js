@@ -5,8 +5,8 @@ import Piece from './Piece';
 export class Pawn extends Piece {
     constructor(alliance, position, moved) {
         super(alliance, position, moved);
-        this.forward = this.alliance == "white" ? -8 : 8;
-        this.taking = this.alliance == "white" ? [-9, -7] : [7, 9];
+        this.forward = this.alliance === "white" ? -8 : 8;
+        this.taking = this.alliance === "white" ? [-9, -7] : [7, 9];
     }
 
     getPieceType() {
@@ -20,7 +20,7 @@ export class Pawn extends Piece {
 
         let threats = [];
 
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
             // Pawn Attack
             for (let attack of this.taking) {
                 const candidateAttack = this.position + attack;
@@ -28,7 +28,7 @@ export class Pawn extends Piece {
                     continue;
                 } else if (candidateAttack >= 0 && candidateAttack < 64) {
                     for (let tile of board) {
-                        if (candidateAttack == tile.getCoordinate()) {
+                        if (candidateAttack === tile.getCoordinate()) {
                             threats.push(candidateAttack);
                         }
                     }
@@ -43,20 +43,20 @@ export class Pawn extends Piece {
         let kingPosition = -1;
 
         for (const tile of board) {
-            if (tile.getPiece()?.getPieceType() == "K" && tile.getPiece().getAlliance() == this.alliance) {
+            if (tile.getPiece()?.getPieceType() === "K" && tile.getPiece().getAlliance() === this.alliance) {
                 kingPosition = tile.getCoordinate();
             }
         }
 
         let legalMoves = [];
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
             const candidateForward = this.position + this.forward;
 
             if (candidateForward > 0 && candidateForward < 64) {
 
                 for (let tile of board) {
                     // No avanza si la casilla está ocupada.
-                    if (candidateForward == tile.getCoordinate() && !tile.isOccupied()) {
+                    if (candidateForward === tile.getCoordinate() && !tile.isOccupied()) {
 
                         const tempMove = movePiece(board[this.position], board[candidateForward], board, playerToMove);
                         if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
@@ -64,7 +64,7 @@ export class Pawn extends Piece {
                         }
 
                         // Pawn Jump
-                        if (this.moved == false && !board[candidateForward + this.forward].isOccupied()) {
+                        if (this.moved === false && !board[candidateForward + this.forward].isOccupied()) {
 
                             const tempMove2 = movePiece(board[this.position], board[candidateForward + this.forward], board, playerToMove);
                             if (!tempMove2[kingPosition].isThreatened(tempMove2, playerToMove)) {
@@ -82,7 +82,7 @@ export class Pawn extends Piece {
                 }
                 if (candidateAttack >= 0 && candidateAttack < 64) {
                     for (let tile of board) {
-                        if (candidateAttack == tile.getCoordinate() && tile.isOccupied() && tile.getPiece().getAlliance() != this.alliance) {
+                        if (candidateAttack === tile.getCoordinate() && tile.isOccupied() && tile.getPiece().getAlliance() !== this.alliance) {
 
                             const tempMove = movePiece(board[this.position], board[candidateAttack], board, playerToMove);
                             if (!tempMove[kingPosition].isThreatened(tempMove, playerToMove)) {
@@ -117,14 +117,14 @@ export class Pawn extends Piece {
 
     firstColumnExclusion(candidate) {
         let answer = false;
-        if (isFirstColumn(this.position) && (candidate == 7 || candidate == -9)) {
+        if (isFirstColumn(this.position) && (candidate === 7 || candidate === -9)) {
             answer = true;
         }
         return answer;
     }
     eighthColumnExclusion(candidate) {
         let answer = false;
-        if (isEighthColumn(this.position) && (candidate == -7 || candidate == 9)) {
+        if (isEighthColumn(this.position) && (candidate === -7 || candidate === 9)) {
             answer = true;
         }
         return answer;

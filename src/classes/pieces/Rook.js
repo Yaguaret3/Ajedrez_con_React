@@ -14,7 +14,7 @@ export class Rook extends Piece {
 
         let threats = [];
 
-        if (playerToMove.getAlliance() == this.alliance) {
+        if (playerToMove.getAlliance() === this.alliance) {
             for (let vector of this.calculateCandidatesVector) {
                 if (this.firstColumnExclusion(vector, this.position) ||
                     this.eighthColumnExclusion(vector, this.position)) {
@@ -46,7 +46,7 @@ export class Rook extends Piece {
         let kingPosition = -1;
 
         for (const tile of board) {
-            if (tile.getPiece()?.getPieceType() == "K" && tile.getPiece().getAlliance() == this.alliance) {
+            if (tile.getPiece()?.getPieceType() === "K" && tile.getPiece().getAlliance() === this.alliance) {
                 kingPosition = tile.getCoordinate();
             }
         }
@@ -54,7 +54,7 @@ export class Rook extends Piece {
         let legalMoves = [];
 
         // El movimiento es legal si coincide con el color del jugador.
-        if (playerToMove?.getAlliance() == this.alliance) {
+        if (playerToMove?.getAlliance() === this.alliance) {
 
             // Hacemos un ciclo para cada vector para ir llenando el arreglo
             for (let vector of this.calculateCandidatesVector) {
@@ -88,7 +88,7 @@ export class Rook extends Piece {
                 }
                 // Miramos si el destino tiene una pieza. Si es del enemigo, sumamos el destino al array.
                 if (tileCandidate >= 0 && tileCandidate < 64) {
-                    if (board[tileCandidate].getPiece()?.getAlliance() != this.alliance) {
+                    if (board[tileCandidate].getPiece()?.getAlliance() !== this.alliance) {
 
                         // Fijarse que no quede el rey amenazado
                         const tempMove = movePiece(board[this.position], board[tileCandidate], board, playerToMove);
@@ -104,14 +104,14 @@ export class Rook extends Piece {
 
     firstColumnExclusion(vector, lastTilePosition) {
         let answer = false;
-        if (isFirstColumn(lastTilePosition) && vector == -1) {
+        if (isFirstColumn(lastTilePosition) && vector === -1) {
             answer = true;
         }
         return answer;
     }
     eighthColumnExclusion(vector, lastTilePosition) {
         let answer = false;
-        if (isEighthColumn(lastTilePosition) && vector == 1) {
+        if (isEighthColumn(lastTilePosition) && vector === 1) {
             answer = true;
         }
         return answer;
